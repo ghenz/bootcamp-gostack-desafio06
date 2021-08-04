@@ -29,6 +29,7 @@ describe('Transaction', () => {
   afterAll(async () => {
     const mainConnection = getConnection();
 
+    await connection.synchronize();
     await connection.close();
     await mainConnection.close();
   });
