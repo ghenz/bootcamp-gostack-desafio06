@@ -1,7 +1,6 @@
-import { EntityRepository, Repository, getRepository } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
 
 import Transaction from '../models/Transaction';
-import Category from '../models/Category';
 
 interface Balance {
   income: number;
@@ -38,26 +37,6 @@ class TransactionsRepository extends Repository<Transaction> {
     const total = income - outcome;
 
     return { income, outcome, total };
-  }
-
-  public async findOrCreateCategory(category: string): Promise<Category> {
-    const categoryRepository = getRepository(Category);
-
-    let transactionCategory = await categoryRepository.findOne({
-      where: {
-        title: category,
-      },
-    });
-
-    if (!transactionCategory) {
-      transactionCategory = categoryRepository.create({
-        title: category,
-      });
-
-      await categoryRepository.save(transactionCategory);
-    }
-
-    return transactionCategory;
   }
 }
 
