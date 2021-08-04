@@ -50,13 +50,9 @@ class ImportTransactionsService {
 
     await new Promise(resolve => csvParser.on('end', resolve));
 
-    console.log(transactions);
-
-    const filteredCategories = categories.filter(
-      (category: string, index: number) => {
-        return categories.indexOf(category) === index;
-      },
-    );
+    const filteredCategories = categories.filter((category, index) => {
+      return categories.indexOf(category) === index;
+    });
 
     const findedCategories = await categoryRepository.find({
       where: {
@@ -68,12 +64,12 @@ class ImportTransactionsService {
       return category.title;
     });
 
-    const addNewCategories = filteredCategories.filter((category: string) => {
+    const addNewCategories = filteredCategories.filter(category => {
       return !categoriesTitle.includes(category);
     });
 
     const newCategories = categoryRepository.create(
-      addNewCategories.map((title: string) => ({
+      addNewCategories.map(title => ({
         title,
       })),
     );
